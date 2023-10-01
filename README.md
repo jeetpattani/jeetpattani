@@ -1,5 +1,5 @@
 Jeet Pattani 
-Andorid developer 
+Software developer 
 
 
 <!---
