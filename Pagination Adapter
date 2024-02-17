@@ -143,6 +143,10 @@ public abstract class PaginatedAdapter<ITEM, VH extends RecyclerView.ViewHolder>
                         if (!loadingNewItems) {
                             loadingNewItems = true;
                             mListener.onNextPage(++mCurrentPage);
+
+ // Increment the current page by 11 for the next page
+ // mListener.onNextPage(mCurrentPage += 11);
+
                         }
                     }
                 }
