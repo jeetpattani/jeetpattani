@@ -1,0 +1,31 @@
+
+class TherapyViewModel : ViewModel() {
+
+    var therapiesLiveData = MutableLiveData<Result<TherapyData>>()
+    fun therapies() {
+        viewModelScope.launch {
+            try {
+                val response = RetrofitProvider.provideRetrofitObject().therapyService.therapies()
+                if (response.isSuccessful) {
+                    val result = response.body()
+                    if (result?.status == AppConstants.ResponseCode.SUCCESS) {
+                        therapiesLiveData.value = Result.Success(result)
+                    } else {
+                        therapiesLiveData.value =
+                            Result.Error(Exception("Unsuccessful response or status not SUCCESS"))
+                    }
+                } else {
+                    therapiesLiveData.value = Result.Error(Exception("Unsuccessful response"))
+                }
+            } catch (e: Exception) {
+                therapiesLiveData.value = Result.Error(java.lang.Exception("Time out"))
+            }
+        }
+    }
+
+}
+
+sealed class Result<out T> {
+    data class Success<out T>(val data: T) : Result<T>()
+    data class Error(val exception: Exception) : Result<Nothing>()
+}
